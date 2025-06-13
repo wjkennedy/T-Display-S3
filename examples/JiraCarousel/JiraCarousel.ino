@@ -2,6 +2,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <HTTPClient.h>
+#include <WiFiClientSecure.h>
 #include <ArduinoJson.h>
 #include <Preferences.h>
 #include <TFT_eSPI.h>
@@ -89,9 +90,11 @@ void setupWiFi() {
 
 void fetchIssues() {
     if (jiraHost.isEmpty()) return;
+    WiFiClientSecure client;
+    client.setInsecure(); // Skip certificate validation, suitable for testing only
     HTTPClient http;
     String url = "https://" + jiraHost + "/rest/api/3/search?jql=assignee=currentUser()%20order%20by%20updated%20desc&maxResults=5";
-    http.begin(url);
+    http.begin(client, url);
     String auth = jiraEmail + ":" + jiraToken;
     auth = base64::encode(auth);
     http.addHeader("Authorization", "Basic " + auth);
