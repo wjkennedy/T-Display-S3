@@ -116,6 +116,14 @@ void fetchIssues() {
 }
 
 void displayCurrentIssue() {
+    if (WiFi.status() != WL_CONNECTED || ssid.isEmpty()) {
+        tft.fillScreen(TFT_BLACK);
+        tft.setCursor(0, 0);
+        tft.setTextColor(TFT_WHITE, TFT_BLACK);
+        tft.println("Connect to Wi-Fi:");
+        tft.println("JiraCarouselSetup");
+        return;
+    }
     if (issues.empty()) {
         tft.fillScreen(TFT_BLACK);
         tft.setCursor(0, 0);
@@ -141,6 +149,12 @@ void setup() {
     Serial.begin(115200);
     tft.begin();
     tft.setRotation(1);
+
+    tft.fillScreen(TFT_BLACK);
+    tft.setCursor(0, 0);
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.println("Connect to Wi-Fi:");
+    tft.println("JiraCarouselSetup");
 
     prefs.begin("jira", false);
     loadConfig();
