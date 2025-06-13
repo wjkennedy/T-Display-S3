@@ -7,6 +7,7 @@
 #include <Preferences.h>
 #include <TFT_eSPI.h>
 #include <base64.h>
+#include <vector>
 #include "pin_config.h"
 
 // Web server for configuration
